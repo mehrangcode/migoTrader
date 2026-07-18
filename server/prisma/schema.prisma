@@ -1,0 +1,128 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum SignalDirection {
+  BUY
+  SELL
+}
+
+enum SignalOutcome {
+  PENDING
+  WIN
+  LOSS
+  EXPIRED
+}
+
+enum NotificationChannelType {
+  EMAIL
+  TELEGRAM
+}
+
+model User {
+  id           String    @id @default(uuid())
+  email        String    @unique
+  passwordHash String
+  role         Role      @default(USER)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  refreshTokens        RefreshToken[]
+  notificationChannels NotificationChannel[]
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  userId    String
+  tokenHash String   @unique
+  expiresAt DateTime
+  revoked   Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model TrackedSymbol {
+  id        String   @id @default(uuid())
+  symbol    String   @unique
+  label     String?
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  timeframes SymbolTimeframeConfig[]
+}
+
+model SymbolTimeframeConfig {
+  id               String   @id @default(uuid())
+  trackedSymbolId  String
+  timeframe        String
+  indicatorsConfig Json
+  isActive         Boolean  @default(true)
+  lastPolledAt     DateTime?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  trackedSymbol TrackedSymbol @relation(fields: [trackedSymbolId], references: [id], onDelete: Cascade)
+
+  @@unique([trackedSymbolId, timeframe])
+}
+
+model Candle {
+  id        String   @id @default(uuid())
+  symbol    String
+  timeframe String
+  openTime  BigInt
+  open      Float
+  high      Float
+  low       Float
+  close     Float
+  volume    Float
+  createdAt DateTime @default(now())
+
+  @@unique([symbol, timeframe, openTime])
+  @@index([symbol, timeframe, openTime])
+}
+
+model Signal {
+  id         String          @id @default(uuid())
+  symbol     String
+  timeframe  String
+  direction  SignalDirection
+  indicator  String
+  price      Float
+  stopLoss   Float?
+  takeProfit Float?
+  outcome    SignalOutcome   @default(PENDING)
+  resolvedAt DateTime?
+  reason     Json
+  createdAt  DateTime        @default(now())
+
+  @@index([symbol, timeframe, createdAt])
+  @@index([outcome])
+}
+
+model NotificationChannel {
+  id        String                  @id @default(uuid())
+  userId    String
+  type      NotificationChannelType
+  target    String
+  isEnabled Boolean                 @default(false)
+  createdAt DateTime                @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
