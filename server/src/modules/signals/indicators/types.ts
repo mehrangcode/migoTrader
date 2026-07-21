@@ -41,3 +41,15 @@ export interface OrderBlock {
   /** The structure event (BOS/CHoCH) whose impulsive move this order block preceded. */
   causedBy: StructureEvent;
 }
+
+// types.ts — add alongside OrderBlock
+export interface FairValueGap {
+  direction:   "bullish" | "bearish";
+  candleIndex: number;
+  openTime:    number;
+  top:         number;
+  bottom:      number;
+  points:      number;
+  session:     "london" | "newYork" | "overlap";
+  filled:      boolean;
+}

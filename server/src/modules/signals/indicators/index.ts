@@ -5,6 +5,7 @@ import { rsi } from "./rsi";
 import { sma } from "./sma";
 import { structure } from "./structure";
 import { swingPoints } from "./swingPoints";
+import { fairValueGap } from "./fvg";
 import { IndicatorFn } from "./types";
 
 /**
@@ -18,6 +19,7 @@ export const indicatorRegistry: Record<string, IndicatorFn> = {
   rsi,
   atr,
   swingPoints,
+  fairValueGap,
   structure,
   orderBlock,
 };
