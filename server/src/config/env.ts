@@ -14,8 +14,8 @@ const envSchema = z.object({
 
   CORS_ORIGIN: z.string().default("*"),
 
-  MARKET_DATA_BASE_URL: z.string().default("https://sapi.xt.com"),
-  POLL_INTERVAL_SECONDS: z.coerce.number().default(30),
+  MARKET_DATA_BASE_URL: z.string().default("https://api.nobitex.ir"),
+  POLL_INTERVAL_SECONDS: z.coerce.number().default(300),
 });
 
 const parsed = envSchema.safeParse(process.env);

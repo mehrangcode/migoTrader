@@ -2,7 +2,7 @@ import { createServer } from "http";
 import { createApp } from "./app";
 import { appConfig } from "./config";
 import { startCandleScheduler } from "./infrastructure/scheduler/candleScheduler";
-import { XtProvider } from "./infrastructure/marketData/xtProvider";
+import { NobitexProvider } from "./infrastructure/marketData/nobitexProvider";
 import { EmailNotificationProvider } from "./infrastructure/notifications/emailNotificationProvider";
 import { NotificationDispatcher } from "./infrastructure/notifications/notificationDispatcher";
 import { SocketNotificationProvider } from "./infrastructure/notifications/socketNotificationProvider";
@@ -15,7 +15,7 @@ const app = createApp();
 const httpServer = createServer(app);
 const io = createSocketServer(httpServer);
 
-const marketDataProvider = new XtProvider(appConfig.marketData.baseUrl);
+const marketDataProvider = new NobitexProvider(appConfig.marketData.baseUrl);
 
 const notificationDispatcher = new NotificationDispatcher(
   new SocketNotificationProvider(io),
