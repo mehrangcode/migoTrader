@@ -27,4 +27,4 @@ export const indicatorRegistry: Record<string, IndicatorFn> = {
 export type IndicatorName = keyof typeof indicatorRegistry;
 
 export * from "./types";
-export { atr, ema, orderBlock, rsi, sma, structure, swingPoints };
+export { atr, ema, orderBlock, rsi, sma, fairValueGap, structure, swingPoints };

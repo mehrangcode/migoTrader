@@ -25,7 +25,7 @@ export const INDICATORS = [
   { key: "rsi", label: "RSI", hasPeriod: true, defaultPeriod: 14 },
   { key: "atr", label: "ATR", hasPeriod: true, defaultPeriod: 14 },
   { key: "swingPoints", label: "Swing Points", hasPeriod: false, defaultPeriod: 0 },
-  { key: "structure", label: "Structure (BOS/CHoCH)", hasPeriod: false, defaultPeriod: 0 },
+  { key: "fvg", label: "Fare Value Gap", hasPeriod: false, defaultPeriod: 0 },
   { key: "structure", label: "Structure (BOS/CHoCH)", hasPeriod: false, defaultPeriod: 0 },
   { key: "orderBlock", label: "Order Blocks", hasPeriod: false, defaultPeriod: 0 },
 ] as const;
